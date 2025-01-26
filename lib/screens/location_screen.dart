@@ -14,6 +14,7 @@ class _LocationScreenState extends State<LocationScreen> {
   void initState() {
     super.initState();
     print(widget.locationWeather.location);
+    print("Testing if the commint will run");
   }
 
   @override

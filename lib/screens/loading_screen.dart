@@ -17,7 +17,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
   double latitude = 0.0;
   double longitude = 0.0;
   bool isLoading = true;
-  var weatherData;
+  dynamic weatherData;
 
   @override
   void initState() {
@@ -37,7 +37,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
         "https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$apiKey",
       ),
     );
-    var data = await networkHelper.fetchWeatherData();
+    dynamic data = await networkHelper.fetchWeatherData();
     setState(() {
       isLoading = false;
       weatherData = data;
@@ -86,9 +86,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
   }
 }
 
-// double temperature = jsonDecode(data)["main"]["temp"];
-//         int conditionNumber = jsonDecode(data)["weather"][0]["id"];
-//         String cityName = jsonDecode(data)["name"];
+
 //         print(temperature);
 //         print(conditionNumber);
 //         print(cityName);

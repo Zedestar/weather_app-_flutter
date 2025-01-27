@@ -53,6 +53,40 @@ class _LocationScreenState extends State<LocationScreen> {
             image: AssetImage("assets/images/wallpaper.jpg"),
           ),
         ),
+        child: Column(
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.baseline,
+              mainAxisAlignment: MainAxisAlignment.center,
+              textBaseline: TextBaseline.alphabetic,
+              children: [
+                Text(
+                  cityName,
+                  style: TextStyle(fontSize: 50.0, color: Colors.black),
+                ),
+                SizedBox(
+                  width: 20.0,
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.baseline,
+                  textBaseline: TextBaseline.alphabetic,
+                  children: [
+                    Text(
+                      temperature.toString(),
+                      style: TextStyle(
+                        fontSize: 50.0,
+                      ),
+                    ),
+                    Text(
+                      "C",
+                      style: TextStyle(fontSize: 20),
+                    )
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

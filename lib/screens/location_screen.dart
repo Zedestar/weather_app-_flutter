@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
 
 class LocationScreen extends StatefulWidget {
   const LocationScreen({super.key, this.locationWeather});
@@ -15,10 +16,10 @@ class _LocationScreenState extends State<LocationScreen> {
   late dynamic cityName;
 
   void updateUI(dynamic weatherData) {
-    temperature = weatherData["main"]["temp"]; // Double type
-    condition = weatherData["weather"][0]["id"]; // Integer type
-    cityName = weatherData["name"]; // String type
-
+    dynamic data = jsonDecode(weatherData);
+    temperature = data["main"]["temp"];
+    condition = data["weather"][0]["main"];
+    cityName = data["name"];
     print(temperature);
     print(condition);
     print(cityName);

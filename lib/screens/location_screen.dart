@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/components/card_with_two_text.dart';
 import 'package:weather_app/services/weather.dart';
 import 'dart:convert';
 import 'package:intl/intl.dart';
@@ -71,7 +72,7 @@ class _LocationScreenState extends State<LocationScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Expanded(
-              flex: 4,
+              flex: 5,
               child: Container(
                 margin: EdgeInsets.all(10),
                 padding: EdgeInsets.all(10),
@@ -80,6 +81,7 @@ class _LocationScreenState extends State<LocationScreen> {
                   borderRadius: BorderRadius.circular(10.0),
                 ),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Text(
                       cityName,
@@ -93,7 +95,26 @@ class _LocationScreenState extends State<LocationScreen> {
                       weatherIcon,
                       style: TextStyle(fontSize: 150),
                     ),
-                    Row()
+                    Text(
+                      weatherMessage,
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    Row(
+                      children: [
+                        CardWithTwoText(
+                          weatherElement: "temp",
+                          weatherAmount: temperature,
+                        ),
+                        CardWithTwoText(
+                          weatherElement: "temp",
+                          weatherAmount: condition.toDouble(),
+                        ),
+                        CardWithTwoText(
+                          weatherElement: "temp",
+                          weatherAmount: temperature,
+                        )
+                      ],
+                    )
                   ],
                 ),
               ),

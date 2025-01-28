@@ -48,42 +48,26 @@ class _LocationScreenState extends State<LocationScreen> {
         ),
       ),
       body: Container(
+        width: double.infinity,
         decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/images/wallpaper.jpg"),
+          gradient: LinearGradient(
+            colors: [Colors.black, const Color.fromARGB(255, 32, 29, 29)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
           ),
+          // image: DecorationImage(
+          //   image: AssetImage("assets/images/wallpaper.jpg"),
+          //   fit: BoxFit.fill,
+          // ),
         ),
         child: Column(
           children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.baseline,
-              mainAxisAlignment: MainAxisAlignment.center,
-              textBaseline: TextBaseline.alphabetic,
-              children: [
-                Text(
-                  cityName,
-                  style: TextStyle(fontSize: 50.0, color: Colors.black),
-                ),
-                SizedBox(
-                  width: 20.0,
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.baseline,
-                  textBaseline: TextBaseline.alphabetic,
-                  children: [
-                    Text(
-                      temperature.toString(),
-                      style: TextStyle(
-                        fontSize: 50.0,
-                      ),
-                    ),
-                    Text(
-                      "C",
-                      style: TextStyle(fontSize: 20),
-                    )
-                  ],
-                ),
-              ],
+            Expanded(
+              flex: 6,
+              child: Text("Soon the data will be available"),
+            ),
+            Expanded(
+              child: Text("This place will for cards"),
             ),
           ],
         ),

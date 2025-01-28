@@ -16,8 +16,11 @@ class _LocationScreenState extends State<LocationScreen> {
   late double temperature;
   late int condition;
   late String cityName;
+  late String weatherIcon;
+  late String weatherMessage;
 
-  DateTime presentDate = DateTime(year)
+  DateTime presentDate = DateTime.now();
+  late String formattedDate;
 
   void updateUI(dynamic weatherData) {
     dynamic data = jsonDecode(weatherData);
@@ -26,8 +29,8 @@ class _LocationScreenState extends State<LocationScreen> {
     cityName = data["name"];
     // Creating the Weather Model
     WeatherModel weatherModer = WeatherModel();
-    String weatherIcon = weatherModer.getWeatherIcon(condition);
-    String weatherMessage = weatherModer.getMessage(temperature);
+    weatherIcon = weatherModer.getWeatherIcon(condition);
+    weatherMessage = weatherModer.getMessage(temperature);
     print(temperature);
     print(condition);
     print(cityName);
@@ -38,6 +41,7 @@ class _LocationScreenState extends State<LocationScreen> {
   @override
   void initState() {
     super.initState();
+    formattedDate = DateFormat('yyyy-MM-dd').format(presentDate);
     updateUI(widget.locationWeather);
   }
 
@@ -81,7 +85,15 @@ class _LocationScreenState extends State<LocationScreen> {
                       cityName,
                       style: TextStyle(fontSize: 40),
                     ),
-                    DatePickerDialog(firstDate: firstDate, lastDate: lastDate)
+                    Text(
+                      presentDate.toString(),
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    Text(
+                      weatherIcon,
+                      style: TextStyle(fontSize: 150),
+                    ),
+                    Row()
                   ],
                 ),
               ),

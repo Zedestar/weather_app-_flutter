@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/services/weather.dart';
 import 'dart:convert';
+import 'package:intl/intl.dart';
 
 class LocationScreen extends StatefulWidget {
   const LocationScreen({super.key, this.locationWeather});
@@ -15,6 +16,8 @@ class _LocationScreenState extends State<LocationScreen> {
   late double temperature;
   late int condition;
   late String cityName;
+
+  DateTime presentDate = DateTime(year)
 
   void updateUI(dynamic weatherData) {
     dynamic data = jsonDecode(weatherData);
@@ -50,24 +53,50 @@ class _LocationScreenState extends State<LocationScreen> {
       body: Container(
         width: double.infinity,
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.black, const Color.fromARGB(255, 32, 29, 29)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-          // image: DecorationImage(
-          //   image: AssetImage("assets/images/wallpaper.jpg"),
-          //   fit: BoxFit.fill,
+          // gradient: LinearGradient(
+          //   colors: [Colors.black, const Color.fromARGB(255, 32, 29, 29)],
+          //   begin: Alignment.topLeft,
+          //   end: Alignment.bottomRight,
           // ),
+          image: DecorationImage(
+            image: AssetImage("assets/images/wallpaper.jpg"),
+            fit: BoxFit.fill,
+          ),
         ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Expanded(
-              flex: 6,
-              child: Text("Soon the data will be available"),
+              flex: 4,
+              child: Container(
+                margin: EdgeInsets.all(10),
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: const Color.fromARGB(200, 33, 149, 243),
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                child: Column(
+                  children: [
+                    Text(
+                      cityName,
+                      style: TextStyle(fontSize: 40),
+                    ),
+                    DatePickerDialog(firstDate: firstDate, lastDate: lastDate)
+                  ],
+                ),
+              ),
             ),
             Expanded(
-              child: Text("This place will for cards"),
+              flex: 2,
+              child: Container(
+                margin: EdgeInsets.all(10),
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: const Color.fromARGB(200, 33, 149, 243),
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                child: Row(),
+              ),
             ),
           ],
         ),

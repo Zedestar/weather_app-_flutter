@@ -41,16 +41,18 @@ class _LoadingScreenState extends State<LoadingScreen> {
       isLoading = false;
       weatherData = data;
     });
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) {
-          return LocationScreen(
-            locationWeather: weatherData,
-          );
-        },
-      ),
-    );
+    if (weatherData != null) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) {
+            return LocationScreen(
+              locationWeather: weatherData,
+            );
+          },
+        ),
+      );
+    }
   }
 
   @override
@@ -71,28 +73,42 @@ class _LoadingScreenState extends State<LoadingScreen> {
               ),
             )
           : Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    isLoading = true;
-                  });
-                  _setLocationWeatherData();
-                },
-                child: Text("Loading button"),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    "Check your internet connection..",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 40.0,
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      elevation: 6,
+                      minimumSize: Size(150, 50),
+                      padding: const EdgeInsets.all(10),
+                      backgroundColor: Colors.blue,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        isLoading = true;
+                      });
+                      _setLocationWeatherData();
+                    },
+                    child: Text(
+                      "Reload",
+                      style: TextStyle(fontSize: 20.0),
+                    ),
+                  ),
+                ],
               ),
             ),
     );
   }
 }
-
-
-//         print(temperature);
-//         print(conditionNumber);
-//         print(cityName);
-
-
-   // // data = jsonDecode(data);
-    // print(latitude);
-    // print(longitude);
-    // print(data);
-    // // print(data);

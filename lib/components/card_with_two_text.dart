@@ -1,10 +1,17 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 
 class CardWithTwoText extends StatelessWidget {
   const CardWithTwoText(
-      {super.key, required this.weatherElement, required this.weatherAmount});
+      {super.key,
+      required this.weatherElement,
+      required this.weatherAmount,
+      required this.weatherUnit});
+
   final String weatherElement;
   final double weatherAmount;
+  final String weatherUnit;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +33,7 @@ class CardWithTwoText extends StatelessWidget {
               height: 4,
             ),
             Text(
-              '$weatherAmount°C',
+              '$weatherAmount$weatherUnit',
               style: TextStyle(fontSize: 20),
             ),
           ],

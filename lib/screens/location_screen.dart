@@ -17,6 +17,9 @@ class _LocationScreenState extends State<LocationScreen> {
   late double temperature;
   late int condition;
   late String cityName;
+  late String countryCode;
+  late double windSpeed;
+  late int humidity;
   late String weatherIcon;
   late String weatherMessage;
 
@@ -27,7 +30,10 @@ class _LocationScreenState extends State<LocationScreen> {
     dynamic data = jsonDecode(weatherData);
     temperature = data["main"]["temp"];
     condition = data["weather"][0]["id"];
+    humidity = data["main"]["humidity"];
     cityName = data["name"];
+    countryCode = data["sys"]["country"];
+    windSpeed = data["wind"]["speed"];
     // Creating the Weather Model
     WeatherModel weatherModer = WeatherModel();
     weatherIcon = weatherModer.getWeatherIcon(condition);
@@ -37,6 +43,7 @@ class _LocationScreenState extends State<LocationScreen> {
     print(cityName);
     print(weatherIcon);
     print(weatherMessage);
+    print(data);
   }
 
   @override
@@ -84,8 +91,11 @@ class _LocationScreenState extends State<LocationScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Text(
-                      cityName,
-                      style: TextStyle(fontSize: 40),
+                      "$cityName $countryCode",
+                      style: TextStyle(
+                        fontSize: 40,
+                        fontWeight: FontWeight.w900,
+                      ),
                     ),
                     Text(
                       presentDate.toString(),
@@ -97,21 +107,26 @@ class _LocationScreenState extends State<LocationScreen> {
                     ),
                     Text(
                       weatherMessage,
-                      style: TextStyle(fontSize: 20),
+                      style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.w900,
+                      ),
                     ),
                     Row(
                       children: [
                         CardWithTwoText(
                           weatherElement: "temp",
                           weatherAmount: temperature,
+                          weatherUnit: "°C",
                         ),
                         CardWithTwoText(
-                          weatherElement: "temp",
-                          weatherAmount: condition.toDouble(),
-                        ),
+                            weatherElement: "humid",
+                            weatherAmount: humidity.toDouble(),
+                            weatherUnit: "%"),
                         CardWithTwoText(
-                          weatherElement: "temp",
-                          weatherAmount: temperature,
+                          weatherElement: "wind",
+                          weatherAmount: windSpeed,
+                          weatherUnit: "km/h",
                         )
                       ],
                     )

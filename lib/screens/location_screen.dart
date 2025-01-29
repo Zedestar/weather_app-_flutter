@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:weather_app/components/card_with_two_text.dart';
 import 'package:weather_app/services/weather.dart';
 import 'dart:convert';
@@ -143,7 +144,14 @@ class _LocationScreenState extends State<LocationScreen> {
                   color: const Color.fromARGB(200, 33, 149, 243),
                   borderRadius: BorderRadius.circular(10.0),
                 ),
-                child: Row(),
+                child: Column(
+                  children: [
+                    TextField(
+                      style: TextStyle(color: Colors.black),
+                      decoration: 
+                    ),
+                  ],
+                ),
               ),
             ),
           ],

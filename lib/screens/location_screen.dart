@@ -4,6 +4,7 @@ import 'package:weather_app/components/card_with_two_text.dart';
 import 'package:weather_app/services/weather.dart';
 import 'dart:convert';
 import 'package:intl/intl.dart';
+import 'package:weather_app/utilities/constants.dart';
 
 class LocationScreen extends StatefulWidget {
   const LocationScreen({super.key, this.locationWeather});
@@ -147,9 +148,8 @@ class _LocationScreenState extends State<LocationScreen> {
                 child: Column(
                   children: [
                     TextField(
-                      style: TextStyle(color: Colors.black),
-                      decoration: 
-                    ),
+                        style: TextStyle(color: Colors.black),
+                        decoration: kTextFieldInputDecorationsSettings),
                   ],
                 ),
               ),

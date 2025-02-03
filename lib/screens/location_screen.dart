@@ -5,6 +5,7 @@ import 'package:weather_app/services/weather.dart';
 import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:weather_app/utilities/constants.dart';
+import 'dart:math';
 
 class LocationScreen extends StatefulWidget {
   const LocationScreen({super.key, this.locationWeather});
@@ -30,7 +31,9 @@ class _LocationScreenState extends State<LocationScreen> {
 
   void updateUI(dynamic weatherData) {
     dynamic data = jsonDecode(weatherData);
-    temperature = data["main"]["temp"];
+    temperature = double.parse(
+      (data["main"]["temp"] - 273.17).toStringAsFixed(2),
+    );
     condition = data["weather"][0]["id"];
     humidity = data["main"]["humidity"];
     cityName = data["name"];
@@ -58,6 +61,7 @@ class _LocationScreenState extends State<LocationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // resizeToAvoidBottomInset: true,
       appBar: AppBar(
         backgroundColor: Colors.blue,
         title: Center(
@@ -148,8 +152,13 @@ class _LocationScreenState extends State<LocationScreen> {
                 child: Column(
                   children: [
                     TextField(
-                        style: TextStyle(color: Colors.black),
-                        decoration: kTextFieldInputDecorationsSettings),
+                      style: TextStyle(color: Colors.black),
+                      keyboardType: TextInputType.numberWithOptions(),
+                      decoration: kTextFieldInputDecorationsSettings,
+                      onChanged: (value) {
+                        print(value);
+                      },
+                    ),
                   ],
                 ),
               ),

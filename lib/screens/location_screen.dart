@@ -1,11 +1,15 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:weather_app/components/card_with_two_text.dart';
+import 'package:weather_app/components/dialog_box.dart';
+import 'package:weather_app/services/networking.dart';
 import 'package:weather_app/services/weather.dart';
 import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:weather_app/utilities/constants.dart';
-import 'dart:math';
+import 'dart:io';
 
 class LocationScreen extends StatefulWidget {
   const LocationScreen({super.key, this.locationWeather});
@@ -25,6 +29,9 @@ class _LocationScreenState extends State<LocationScreen> {
   late int humidity;
   late String weatherIcon;
   late String weatherMessage;
+  late String locationName;
+  String apiKey = "733595407526d7280b04fd76a9fb03d4";
+  bool LoadingState = false;
 
   DateTime presentDate = DateTime.now();
   late String formattedDate;
@@ -93,51 +100,53 @@ class _LocationScreenState extends State<LocationScreen> {
                   color: const Color.fromARGB(200, 33, 149, 243),
                   borderRadius: BorderRadius.circular(10.0),
                 ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Text(
-                      "$cityName $countryCode",
-                      style: TextStyle(
-                        fontSize: 40,
-                        fontWeight: FontWeight.w900,
+                child: LoadingState
+                    ? loadingSpiking
+                    : Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Text(
+                            "$cityName $countryCode",
+                            style: TextStyle(
+                              fontSize: 40,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                          Text(
+                            presentDate.toString(),
+                            style: TextStyle(fontSize: 20),
+                          ),
+                          Text(
+                            weatherIcon,
+                            style: TextStyle(fontSize: 150),
+                          ),
+                          Text(
+                            weatherMessage,
+                            style: TextStyle(
+                              fontSize: 30,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              CardWithTwoText(
+                                weatherElement: "temp",
+                                weatherAmount: temperature,
+                                weatherUnit: "°C",
+                              ),
+                              CardWithTwoText(
+                                  weatherElement: "humid",
+                                  weatherAmount: humidity.toDouble(),
+                                  weatherUnit: "%"),
+                              CardWithTwoText(
+                                weatherElement: "wind",
+                                weatherAmount: windSpeed,
+                                weatherUnit: "km/h",
+                              )
+                            ],
+                          )
+                        ],
                       ),
-                    ),
-                    Text(
-                      presentDate.toString(),
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    Text(
-                      weatherIcon,
-                      style: TextStyle(fontSize: 150),
-                    ),
-                    Text(
-                      weatherMessage,
-                      style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.w900,
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        CardWithTwoText(
-                          weatherElement: "temp",
-                          weatherAmount: temperature,
-                          weatherUnit: "°C",
-                        ),
-                        CardWithTwoText(
-                            weatherElement: "humid",
-                            weatherAmount: humidity.toDouble(),
-                            weatherUnit: "%"),
-                        CardWithTwoText(
-                          weatherElement: "wind",
-                          weatherAmount: windSpeed,
-                          weatherUnit: "km/h",
-                        )
-                      ],
-                    )
-                  ],
-                ),
               ),
             ),
             Expanded(
@@ -153,11 +162,70 @@ class _LocationScreenState extends State<LocationScreen> {
                   children: [
                     TextField(
                       style: TextStyle(color: Colors.black),
-                      keyboardType: TextInputType.numberWithOptions(),
+                      keyboardType: TextInputType.text,
                       decoration: kTextFieldInputDecorationsSettings,
                       onChanged: (value) {
-                        print(value);
+                        locationName = value;
                       },
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          LoadingState = true;
+                        });
+                        // Fetch weather data for entered location
+                        try {
+                          NetworkHelper placeWeather = NetworkHelper(
+                            Uri.parse(
+                                "https://api.openweathermap.org/data/2.5/weather?q=$locationName&appid=$apiKey"),
+                          );
+
+                          placeWeather.fetchWeatherData().then((weatherData) {
+                            setState(() {
+                              LoadingState = false;
+                            });
+                            if (placeWeather.getStatusCode() == 200) {
+                              setState(() {
+                                updateUI(weatherData);
+                              });
+                            } else if (placeWeather.getStatusCode() == 404) {
+                              setState(
+                                () {
+                                  showCustomDialog(
+                                    context: context,
+                                    title: "Error",
+                                    content: "Location is not available",
+                                  );
+                                },
+                              );
+                            } else if (placeWeather.getStatusCode() == 408) {
+                              setState(() {
+                                showCustomDialog(
+                                  context: context,
+                                  title: "Error",
+                                  content:
+                                      "Timeout. \nCheck your internet connection",
+                                );
+                              });
+                            }
+                          });
+                        } on SocketException {
+                          setState(() {
+                            showCustomDialog(
+                              context: context,
+                              title: "Error",
+                              content:
+                                  "Network error. \nCheck your internet connection",
+                            );
+                          });
+                        } catch (e) {
+                          print("There is an error, $e");
+                        }
+                      },
+                      child: Text(
+                        "Get Weather",
+                        style: TextStyle(fontSize: 20.0),
+                      ),
                     ),
                   ],
                 ),

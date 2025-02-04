@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/services/location.dart';
 import 'package:weather_app/services/networking.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
+
 import 'package:weather_app/screens/location_screen.dart';
+import 'package:weather_app/utilities/constants.dart';
 
 class LoadingScreen extends StatefulWidget {
   const LoadingScreen({super.key});
@@ -66,12 +67,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
         ),
       ),
       body: isLoading
-          ? Center(
-              child: SpinKitRotatingCircle(
-                color: Colors.blue,
-                size: 200.0,
-              ),
-            )
+          ? loadingSpiking
           : Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -89,12 +85,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
                     height: 40.0,
                   ),
                   ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      elevation: 6,
-                      minimumSize: Size(150, 50),
-                      padding: const EdgeInsets.all(10),
-                      backgroundColor: Colors.blue,
-                    ),
+                    style: elevatedButtonBottomStyles,
                     onPressed: () {
                       setState(() {
                         isLoading = true;
